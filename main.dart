@@ -12,7 +12,6 @@ void main() {
     stdout.writeln('$n expressed in powers of $b:');
     stdout.writeln(be.stringify(b));
     stdout.writeln('Hit enter for next sequnce ("exit" to exit):');
-    stdout.writeln(pow(2, 63) + 1);
     while (stdin.readLineSync() != "exit" && n != 0) {
       b = b + 1;
       stdout.writeln('Increase base by 1');

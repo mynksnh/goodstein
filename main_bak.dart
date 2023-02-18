@@ -1,25 +1,25 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'base_expression_big.dart';
+import 'base_expression.dart';
 
 void main() {
   try {
     stdout.writeln('Enter a natural number n > 0:');
-    BigInt n = BigInt.from(int.parse(stdin.readLineSync() ?? "1"));
-    BigInt b = BigInt.from(2);
-    var be = BaseExpressionBig().build(n, b);
+    int n = int.parse(stdin.readLineSync() ?? "1");
+    int b = 2;
+    var be = BaseExpression().build(n, b);
     stdout.writeln('$n expressed in powers of $b:');
     stdout.writeln(be.stringify(b));
     stdout.writeln('Hit enter for next sequnce ("exit" to exit):');
-    while (stdin.readLineSync() != "exit" && n != BigInt.from(0)) {
-      b = b + BigInt.from(1);
+    while (stdin.readLineSync() != "exit" && n != 0) {
+      b = b + 1;
       stdout.writeln('Increase base by 1');
       n = be.evaluate(b);
       stdout.writeln("n = ${be.stringify(b)} = $n");
       stdout.writeln("subtract 1 from n");
-      n = n - BigInt.from(1);
-      be = BaseExpressionBig().build(n, b);
+      n = n - 1;
+      be = BaseExpression().build(n, b);
       stdout.writeln("n = ${be.stringify(b)} = $n");
       n != 0
           ? stdout.writeln('Hit enter for next sequnce ("exit" to exit):')
@@ -28,4 +28,8 @@ void main() {
   } catch (e) {
     stdout.write(e.toString());
   }
+}
+
+int add(int a, int b) {
+  return a + b;
 }

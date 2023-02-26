@@ -1,37 +1,33 @@
-import 'dart:io';
-import 'dart:math';
-
 class BaseExpressionBig {
   final _expr = <BaseExpressionBig>[];
 
-  BaseExpressionBig build(BigInt n, BigInt base) {
+  BaseExpressionBig.build(BigInt n, BigInt base) {
     BigInt remainder = n % base;
     BigInt quotient = n - remainder;
 
     var exponents = _getExponents(quotient, base);
     for (var e in exponents) {
-      _push(BaseExpressionBig().build(e, base));
+      _push(BaseExpressionBig.build(e, base));
     }
 
-    if (remainder > BigInt.from(0)) {
-      for (BigInt i = BigInt.from(0); i < remainder; i = i + BigInt.from(1)) {
-        _push(BaseExpressionBig().build(BigInt.from(0), base));
+    if (remainder > BigInt.zero) {
+      for (BigInt i = BigInt.zero; i < remainder; i = i + BigInt.one) {
+        _push(BaseExpressionBig.build(BigInt.zero, base));
       }
     }
-
-    return this;
   }
 
   BigInt evaluate(BigInt base) {
     return _expr.fold(
-        BigInt.from(0),
+        BigInt.zero,
         (previousValue, e) =>
             previousValue + _powBigInt(base, e.evaluate(base)));
   }
 
   String stringify(BigInt base) {
-    var result = _expr.map((e) => "$base^(${e.stringify(base)})").join("+");
-    return result.isEmpty ? "0" : result;
+    return _expr.length == 0
+        ? "0"
+        : _expr.map((e) => "$base^(${e.stringify(base)})").join("+");
   }
 
   void _push(BaseExpressionBig be) {
@@ -40,12 +36,12 @@ class BaseExpressionBig {
 
   List<BigInt> _getExponents(BigInt q, BigInt base) {
     var exponents = <BigInt>[];
-    while (q != BigInt.from(0)) {
-      var exp = BigInt.from(0);
+    while (q != BigInt.zero) {
+      var exp = BigInt.zero;
       var c = base;
       while (c <= q) {
         c = c * base;
-        exp = exp + BigInt.from(1);
+        exp = exp + BigInt.one;
       }
       exponents.add(exp);
       q = q - _powBigInt(base, exp);
@@ -54,11 +50,11 @@ class BaseExpressionBig {
   }
 
   BigInt _powBigInt(BigInt base, BigInt exp) {
-    var result = BigInt.from(1);
-    if (exp == BigInt.from(0)) {
+    var result = BigInt.one;
+    if (exp == BigInt.zero) {
       return result;
     }
-    for (BigInt i = BigInt.from(0); i < exp; i = i + BigInt.from(1)) {
+    for (BigInt i = BigInt.zero; i < exp; i = i + BigInt.one) {
       result = result * base;
     }
     return result;
